@@ -49,7 +49,7 @@ async def create_student(data: StudentCreate, db: AsyncSession=Depends(get_db)):
     
     return student
 
-@app.get('/Students')
+@app.get('/students')
 async def get_students(db: AsyncSession = Depends(get_db)):
     students = await db.scalars(select(StudentDB))
 
@@ -60,7 +60,7 @@ async def get_students(db: AsyncSession = Depends(get_db)):
 async def get_student(student_id : int, db: AsyncSession = Depends(get_db)):
     student = await db.get(StudentDB, student_id)
 
-    if student in None:
+    if student is None:
         raise HTTPException(
             status_code=404,
             detail="Student Not Found"
@@ -68,6 +68,7 @@ async def get_student(student_id : int, db: AsyncSession = Depends(get_db)):
 
     return student
 
+@app.put('/student/{student_id}')
 async def update_student(student_id : int, data:StudentUpdate, 
                          db: AsyncSession = Depends(get_db)):
     student = await db.get(StudentDB, student_id)
