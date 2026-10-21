@@ -5,6 +5,7 @@ class StudentCreate(BaseModel):
     name : str = Field(min_length=1,max_length=100)
     age : int = Field(gt=0)
     email :EmailStr
+    dept_name : str
 
 
 class StudentUpdate(BaseModel):
@@ -16,7 +17,7 @@ class StudentUpdate(BaseModel):
 class StudentOut(BaseModel):
     id : int
     name : str
-    age : int
+    age : int = Field(gt=0)
     email : EmailStr
 
     model_config = ConfigDict(from_attributes=True)
@@ -25,7 +26,7 @@ class StudentOut(BaseModel):
 class UserCreate(BaseModel):
     username : str = Field(min_length=3, max_length=50)
     email : EmailStr
-    password : str = Field(min_length=8,max_length=128)
+    password : str = Field(max_length=128)
 
 
 class UserOut(BaseModel):
@@ -37,4 +38,20 @@ class UserOut(BaseModel):
 
 class UserLogin(BaseModel):
     email : EmailStr
-    password : str = Field(min_length=8,max_length=128)
+    password : str = Field(max_length=16)
+
+
+class DeptCreate(BaseModel):
+    name : str = Field(max_length=100, min_length=1)
+    place : str = Field(min_length=1, max_length=100)
+
+
+class StudentSeed(BaseModel):
+    name : str
+    age : int = Field(gt=0)
+    email : EmailStr
+    department_name : str
+
+class SeedData(BaseModel):
+    departments : list[DeptCreate]
+    students : list[StudentSeed]
